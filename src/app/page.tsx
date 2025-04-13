@@ -4,12 +4,28 @@ import Image from "next/image";
 import LogoutButton from "@/components/auth/LogoutButton";
 import { signOut } from "@/lib/auth/actions";
 import Link from "next/link";
+import ManageSubscriptionButton from '@/components/profile/ManageSubscriptionButton';
 
 export default async function Home() {
   const cookieStore = await cookies()
   const supabase = createClient(cookieStore)
 
   const { data: { user } } = await supabase.auth.getUser()
+
+  let profile = null
+  if (user) {
+    const { data: userProfile, error: profileError } = await supabase
+      .from('profiles')
+      .select('is_subscribed, stripe_customer_id')
+      .eq('id', user.id)
+      .single()
+    
+    if (profileError) {
+        console.error('Error fetching profile:', profileError)
+    } else {
+        profile = userProfile
+    }
+  }
 
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
@@ -18,6 +34,12 @@ export default async function Home() {
           <div className="flex items-center space-x-4">
             <p>Welcome back, {user.email}!</p>
             <LogoutButton signOutAction={signOut} />
+            {profile?.is_subscribed && profile?.stripe_customer_id && (
+                <ManageSubscriptionButton />
+            )}
+            {!profile?.is_subscribed && (
+                <Link href="/subscribe" className="ml-4 px-3 py-1 text-sm font-medium bg-green-600 text-white rounded-md hover:bg-green-700">Subscribe</Link>
+            )}
           </div>
         ) : (
           <p>You are not logged in. <Link href="/login" className="text-blue-600 hover:underline">Log In</Link></p>
