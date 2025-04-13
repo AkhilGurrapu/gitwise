@@ -64,6 +64,7 @@ async function countSteps(supabase: ReturnType<typeof createClient>, lessonId: s
 }
 
 // Use the explicit PageProps type, accepting searchParams but marking as unused
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default async function StepPage({ params, searchParams: _searchParams }: PageProps) {
   const cookieStore = await cookies()
   const supabase = createClient(cookieStore)
