@@ -14,8 +14,8 @@ interface PageProps {
     lessonSlug: string;
     stepOrder: string;
   };
-  // Add searchParams if needed later, but keep simple for now
-  // searchParams?: { [key: string]: string | string[] | undefined }; 
+  // Explicitly include optional searchParams to match Next.js type signature fully
+  searchParams?: { [key: string]: string | string[] | undefined };
 }
 
 // Function to fetch lesson details by slug
@@ -63,8 +63,8 @@ async function countSteps(supabase: ReturnType<typeof createClient>, lessonId: s
     return count ?? 0;
 }
 
-// Use the explicit PageProps type
-export default async function StepPage({ params }: PageProps) {
+// Use the explicit PageProps type, accepting searchParams
+export default async function StepPage({ params, searchParams }: PageProps) {
   const cookieStore = await cookies()
   const supabase = createClient(cookieStore)
   const { moduleSlug, lessonSlug, stepOrder } = params;
