@@ -3,9 +3,10 @@ import { createClient } from '@/lib/supabase/server'
 import Image from "next/image";
 import LogoutButton from "@/components/auth/LogoutButton";
 import { signOut } from "@/lib/auth/actions";
+import Link from "next/link";
 
 export default async function Home() {
-  const cookieStore = cookies()
+  const cookieStore = await cookies()
   const supabase = createClient(cookieStore)
 
   const { data: { user } } = await supabase.auth.getUser()
@@ -19,7 +20,7 @@ export default async function Home() {
             <LogoutButton signOutAction={signOut} />
           </div>
         ) : (
-          <p>You are not logged in. <a href="/login" className="text-blue-600 hover:underline">Log In</a></p>
+          <p>You are not logged in. <Link href="/login" className="text-blue-600 hover:underline">Log In</Link></p>
         )}
         <Image
           className="dark:invert"
