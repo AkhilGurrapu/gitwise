@@ -52,9 +52,14 @@ export default function SubscribePage() {
       // If redirect is successful, the user won't see this part.
       // If it fails for other reasons before redirect, the catch block handles it.
 
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Subscription Error:', err)
-      setError(err.message || 'An unexpected error occurred during subscription.')
+      // Type check before accessing message
+      let errorMessage = 'An unexpected error occurred during subscription.'
+      if (err instanceof Error) {
+        errorMessage = err.message
+      }
+      setError(errorMessage)
       setIsLoading(false) // Ensure loading state is reset on error
     }
     // setIsLoading(false) should likely not be set here if redirect is successful

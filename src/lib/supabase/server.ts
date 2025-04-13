@@ -14,16 +14,19 @@ export function createClient(cookieStore: ReadonlyRequestCookies) {
         },
         set(name: string, value: string, options: CookieOptions) {
           try {
-             (cookieStore as any).set?.({ name, value, ...options }) // Attempt set, may fail silently in Server Components/Actions
-          } catch (error) {
-             // Expected error in Server Component/Action context, can ignore
+            // Attempt set, may fail silently in Server Components/Actions. Ignore error.
+            // Cast to allow calling set, acknowledging it's read-only.
+            (cookieStore as any).set?.({ name, value, ...options })
+          } catch {
+             // Expected error in Server Component/Action context, ignore.
           }
         },
         remove(name: string, options: CookieOptions) {
           try {
-             (cookieStore as any).set?.({ name, value: '', ...options }) // Attempt remove via set, may fail silently
-          } catch (error) {
-             // Expected error in Server Component/Action context, can ignore
+            // Attempt remove via set, may fail silently. Ignore error.
+            (cookieStore as any).set?.({ name, value: '', ...options })
+          } catch {
+             // Expected error in Server Component/Action context, ignore.
           }
         },
       },

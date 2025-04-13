@@ -41,9 +41,13 @@ export default function LoginPage() {
       router.push('/')
       router.refresh()
 
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Authentication error:', error)
-      setError(error.message || 'An unexpected error occurred.')
+      let errorMessage = 'An unexpected error occurred.'
+      if (error instanceof Error) {
+        errorMessage = error.message
+      }
+      setError(errorMessage)
     } finally {
       setIsLoading(false)
     }

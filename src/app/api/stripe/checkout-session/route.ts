@@ -54,11 +54,16 @@ export async function POST(req: Request) {
     // 5. Return the session ID
     return NextResponse.json({ sessionId: checkoutSession.id })
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Stripe Checkout Error:', error)
+    // Type check before accessing message
+    let errorMessage = 'Unknown error'
+    if (error instanceof Error) {
+      errorMessage = error.message
+    }
     return NextResponse.json(
       {
-        error: `Internal server error: ${error.message || 'Unknown error'}`,
+        error: `Internal server error: ${errorMessage}`,
       },
       { status: 500 }
     )

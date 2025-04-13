@@ -29,9 +29,17 @@ export async function POST(req: Request) {
 
   try {
     event = stripe.webhooks.constructEvent(body, signature, webhookSecret)
-  } catch (err: any) {
-    console.error(`Webhook signature verification failed: ${err.message}`)
-    return NextResponse.json({ error: `Webhook Error: ${err.message}` }, { status: 400 })
+  } catch (err: unknown) {
+    console.error('Webhook signature verification failed:', err)
+    let errorMessage = 'Unknown webhook error'
+    if (err instanceof Error) {
+        errorMessage = err.message
+    }
+    // It's good practice to include the specific error type if possible
+    if (err instanceof Stripe.errors.StripeSignatureVerificationError) {
+        errorMessage = `Webhook signature verification failed: ${errorMessage}`
+    }
+    return NextResponse.json({ error: `Webhook Error: ${errorMessage}` }, { status: 400 })
   }
 
   // Successfully constructed event
@@ -74,8 +82,9 @@ export async function POST(req: Request) {
         } else {
           console.log(`Successfully updated subscription status for user ${userId}`)
         }
-      } catch (dbError: any) {
+      } catch (dbError: unknown) {
           console.error('Error updating database:', dbError)
+          // Type check if needed, though less critical here as we just log
           // return NextResponse.json({ error: 'Database connection error' }, { status: 500 })
       }
       // -----------------------------------------
