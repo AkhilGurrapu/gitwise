@@ -16,6 +16,7 @@ export function createClient(cookieStore: ReadonlyRequestCookies) {
           try {
             // Attempt set, may fail silently in Server Components/Actions. Ignore error.
             // Cast to allow calling set, acknowledging it's read-only.
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             (cookieStore as any).set?.({ name, value, ...options })
           } catch {
              // Expected error in Server Component/Action context, ignore.
@@ -24,6 +25,7 @@ export function createClient(cookieStore: ReadonlyRequestCookies) {
         remove(name: string, options: CookieOptions) {
           try {
             // Attempt remove via set, may fail silently. Ignore error.
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             (cookieStore as any).set?.({ name, value: '', ...options })
           } catch {
              // Expected error in Server Component/Action context, ignore.
