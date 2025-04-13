@@ -7,6 +7,17 @@ import GitVisualization from '@/components/tutorials/GitVisualization'
 // We might need a Markdown renderer later
 // import ReactMarkdown from 'react-markdown' 
 
+// Define the specific PageProps type for this page
+interface PageProps {
+  params: {
+    moduleSlug: string;
+    lessonSlug: string;
+    stepOrder: string;
+  };
+  // Add searchParams if needed later, but keep simple for now
+  // searchParams?: { [key: string]: string | string[] | undefined }; 
+}
+
 // Function to fetch lesson details by slug
 async function fetchLesson(supabase: ReturnType<typeof createClient>, slug: string): Promise<Lesson | null> {
     const { data, error } = await supabase
@@ -52,11 +63,8 @@ async function countSteps(supabase: ReturnType<typeof createClient>, lessonId: s
     return count ?? 0;
 }
 
-export default async function StepPage({
-    params,
-  }: {
-    params: { moduleSlug: string; lessonSlug: string; stepOrder: string };
-  }) {
+// Use the explicit PageProps type
+export default async function StepPage({ params }: PageProps) {
   const cookieStore = await cookies()
   const supabase = createClient(cookieStore)
   const { moduleSlug, lessonSlug, stepOrder } = params;
