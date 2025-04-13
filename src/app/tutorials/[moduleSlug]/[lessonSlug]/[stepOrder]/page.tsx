@@ -63,12 +63,15 @@ async function countSteps(supabase: ReturnType<typeof createClient>, lessonId: s
     return count ?? 0;
 }
 
-// Use the explicit PageProps type, accepting searchParams
-export default async function StepPage({ params, searchParams }: PageProps) {
+// Use the explicit PageProps type, accepting searchParams but marking as unused
+export default async function StepPage({ params, searchParams: _searchParams }: PageProps) {
   const cookieStore = await cookies()
   const supabase = createClient(cookieStore)
+  // Destructure params directly
   const { moduleSlug, lessonSlug, stepOrder } = params;
   const currentStepOrder = parseInt(stepOrder, 10);
+
+  // We don't use _searchParams here, but accept it for type signature
 
   // Validate stepOrder is a number
   if (isNaN(currentStepOrder) || currentStepOrder < 1) {
