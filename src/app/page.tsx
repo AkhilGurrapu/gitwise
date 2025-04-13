@@ -1,6 +1,5 @@
 import { cookies } from 'next/headers'
 import { createClient } from '@/lib/supabase/server'
-import Image from "next/image";
 import LogoutButton from "@/components/auth/LogoutButton";
 import { signOut } from "@/lib/auth/actions";
 import Link from "next/link";
