@@ -47,23 +47,23 @@ export default async function ModuleLessonsPage({ params }: ModuleLessonsPagePro
   const moduleSlug = params.moduleSlug
 
   // Fetch module details
-  const module = await fetchModule(supabase, moduleSlug)
+  const currentModule = await fetchModule(supabase, moduleSlug)
 
   // If module not found, show 404
-  if (!module) {
+  if (!currentModule) {
     notFound();
   }
 
   // Fetch lessons for this module
-  const lessons = await fetchLessons(supabase, module.id)
+  const lessons = await fetchLessons(supabase, currentModule.id)
 
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Module Header */}
       <div className="mb-8 border-b pb-4">
-        <h1 className="text-3xl font-bold mb-2">{module.title}</h1>
-        {module.description && (
-          <p className="text-lg text-gray-600">{module.description}</p>
+        <h1 className="text-3xl font-bold mb-2">{currentModule.title}</h1>
+        {currentModule.description && (
+          <p className="text-lg text-gray-600">{currentModule.description}</p>
         )}
       </div>
 
@@ -77,7 +77,7 @@ export default async function ModuleLessonsPage({ params }: ModuleLessonsPagePro
             <Link
               key={lesson.id}
               // Link to the first step (order 1) of the lesson for now
-              href={`/tutorials/${module.slug}/${lesson.slug}/1`}
+              href={`/tutorials/${currentModule.slug}/${lesson.slug}/1`}
               className="block p-4 bg-white rounded-lg border border-gray-200 shadow-sm hover:bg-gray-50 transition-colors duration-150"
             >
               <h3 className="text-xl font-medium text-gray-900">{lesson.title}</h3>

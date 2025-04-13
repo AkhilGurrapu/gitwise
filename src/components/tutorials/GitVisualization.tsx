@@ -4,14 +4,8 @@ import React, { useMemo } from 'react';
 import ReactFlow, {
   Controls,
   Background,
-  Handle, // Import Handle for connection points (though not connecting yet)
-  Position, // Import Position for Handle placement
   type Node,
   type Edge,
-  // applyNodeChanges, // Not needed for read-only view initially
-  // applyEdgeChanges, // Not needed for read-only view initially
-  // type NodeChange, // Not needed for read-only view initially
-  // type EdgeChange, // Not needed for read-only view initially
 } from 'reactflow';
 
 // Import React Flow CSS
