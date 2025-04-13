@@ -7,15 +7,6 @@ import GitVisualization from '@/components/tutorials/GitVisualization'
 // We might need a Markdown renderer later
 // import ReactMarkdown from 'react-markdown' 
 
-// Type for page parameters
-interface StepPageProps {
-  params: {
-    moduleSlug: string;
-    lessonSlug: string;
-    stepOrder: string; // Comes as string from URL
-  };
-}
-
 // Function to fetch lesson details by slug
 async function fetchLesson(supabase: ReturnType<typeof createClient>, slug: string): Promise<Lesson | null> {
     const { data, error } = await supabase
@@ -61,7 +52,11 @@ async function countSteps(supabase: ReturnType<typeof createClient>, lessonId: s
     return count ?? 0;
 }
 
-export default async function StepPage({ params }: StepPageProps) {
+export default async function StepPage({
+    params,
+  }: {
+    params: { moduleSlug: string; lessonSlug: string; stepOrder: string };
+  }) {
   const cookieStore = await cookies()
   const supabase = createClient(cookieStore)
   const { moduleSlug, lessonSlug, stepOrder } = params;
