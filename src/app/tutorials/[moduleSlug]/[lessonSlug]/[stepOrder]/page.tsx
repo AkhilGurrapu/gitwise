@@ -53,6 +53,7 @@ async function countSteps(supabase: ReturnType<typeof createClient>, lessonId: s
 }
 
 // Use 'any' for props as a workaround for the persistent build type error
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default async function StepPage(props: any) { 
   // Manually extract params, assuming the structure is correct at runtime
   const params = props.params as { 
