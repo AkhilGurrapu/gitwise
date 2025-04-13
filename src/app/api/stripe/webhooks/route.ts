@@ -11,7 +11,7 @@ const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET
 // export const config = { api: { bodyParser: false } }; // Not needed in App Router
 
 // Helper function to update user profile based on Stripe customer ID
-async function updateUserProfileByCustomerId(customerId: string, dataToUpdate: Record<string, any>) {
+async function updateUserProfileByCustomerId(customerId: string, dataToUpdate: Record<string, string | boolean | null>) {
   console.log(`Attempting to update profile for customer: ${customerId}`);
   const { error } = await supabaseAdmin
     .from('profiles')
